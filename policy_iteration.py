@@ -1,5 +1,5 @@
 # Implementing Simple Policy Iteration
-from mdp import *
+from grid_world import *
 import math
 class Agent:
     # Our Agent requires a list of states
