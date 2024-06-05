@@ -2,13 +2,16 @@ import random
 # Class for a state in an MDP. Assumes that each state has set of actions 
 # and that each state gives some reward
 class State:
-    def __init__(self, next_states, reward, name='state'):
+    def __init__(self, next_states, x, y, reward):
         self.actions = next_states
-        self.name = name
+        self.name = 'State'+str(x)+str(y)
+        self.x = x 
+        self.y = y
         self.reward = reward
 
     def __str__(self):
         return str(self.name)
+
 
 # Class for N by N Gridworld with State 0-0 being at the top left, N-N being bottom right. 
 # Both are terminal states
@@ -18,12 +21,12 @@ class NxNGrid:
         for i in range(1, n+1):
             for j in range(1, n+1):
                 if (i != 1 or j !=1) and (i != n or j!= n):
-                    states.append(State(next_states=[], reward=reward_non_terminal, name='State'+str(i)+str(j)))
+                    states.append(State([],i,j,reward_non_terminal))
                 else:
-                    states.append(State(next_states=[], reward=final_reward, name='Terminal'+str(i)))
+                    states.append(State([],i,j,final_reward))
             
         # Using row-major ordering to add the cardinal directions as successor states.
-        for index in range(0, len(states)):
+        for index in range(1, len(states)-1):
             i = (int) (index / n)
             j = index - i*(n)
 
@@ -54,3 +57,16 @@ if __name__ == '__main__':
     print("Current Actions")
     for i in curr_actions:
         print(i)
+    # Checking that the terminal state has no actions 
+    for i in four_grid.states:
+        print("Name is :", i.name, " Reward is :", i.reward)
+        for j in i.actions:
+            print(j)
+
+    # Checking my Conversion Logic 
+    states = four_grid.states
+    index = 0
+    for i in states:
+        index += 1
+        print("Name is :", i.name, " X is :", i.x, "Y is :", i.y)
+        print("In List it is :", (i.y-1)*4 + (i.x-1), "Name is :", states[(i.x-1)*4 + (i.y-1)].name)
