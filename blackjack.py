@@ -6,7 +6,7 @@ class BlackJack:
         # Observable Traits for Player
         self.dealer_showing = None
         self.player_sum = 0
-        self.player_ace = False
+        self.usable_aces = 0
         # Hidden Traits of Env
         self.dealer_sum = None 
         self.player_bust = False
@@ -35,18 +35,28 @@ class BlackJack:
     # Action Functions 
     def hit(self):
         # Drawing the Card
-        card = self.draw()   
+        card = self.draw()  
         # Adjusting Game State
-        if card == 1:
-            self.player_ace = True
+        if card == 1 and self.player_sum <= 10:
+            self.usable_aces += 1
+            card = 11
         self.player_sum += card
+
+        # Checking if player should convert their aces
+        while (self.usable_aces > 0 and self.player_sum > 21):
+            self.usable_aces -= 1
+            self.player_sum -= 10
+
         if self.player_sum > 21:
             self.player_bust = True
+        
         return None 
     
     def stick(self):
         return None
     
+
+
     def tick(self, action=['hit', 'stick'][0]):
         '''Takes in an action, returns None if game is to be continued and integer reward if game is done'''
         # 'Actions' Occuring
@@ -76,7 +86,7 @@ class BlackJack:
 if __name__ == '__main__':
     print("Hello World")
     # Setting Seed for Reproducibility (debugging in my case)
-    np.random.seed(2)
+    np.random.seed(4)
     # Creating the environment
     env = BlackJack()
     print(env)
@@ -84,7 +94,7 @@ if __name__ == '__main__':
     reward = env.tick('hit')
     print(env)
     print("Reward is :", reward)
-    reward = env.tick('stand')
+    reward = env.tick('hit')
     print(env)
     print("Reward is :", reward)
 
