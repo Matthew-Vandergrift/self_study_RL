@@ -32,6 +32,13 @@ class BlackJack:
     
     def __str__(self):
         return "Player Sum is :" + str(self.player_sum) + " Dealer Sum is :" + str(self.dealer_sum)
+    
+    def get_state(self):
+        usable_ace = False
+        if self.usable_aces > 0:
+            usable_ace = True
+        return (self.player_sum, self.dealer_showing, usable_ace)
+    
     # Action Functions 
     def hit(self):
         # Drawing the Card
