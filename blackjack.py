@@ -1,4 +1,5 @@
 import numpy as np
+
 # Blackjack Environment as Described on Page 112 on RL: an intro 1st Edition
 
 class BlackJack:
@@ -62,8 +63,6 @@ class BlackJack:
     def stick(self):
         return None
     
-
-
     def tick(self, action=['hit', 'stick'][0]):
         '''Takes in an action, returns None if game is to be continued and integer reward if game is done'''
         # 'Actions' Occuring
